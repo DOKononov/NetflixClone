@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  UpcomingVC.swift
 //  NetflixClone
 //
 //  Created by Dmitry Kononov on 30.08.22.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-class MainTabBarVC: UITabBarController {
+final class UpcomingVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .cyan
-    }
 
+        view.backgroundColor = .systemBackground
+    }
+    
 
 }
-
