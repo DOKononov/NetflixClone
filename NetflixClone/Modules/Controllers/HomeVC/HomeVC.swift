@@ -6,36 +6,35 @@
 //
 
 import UIKit
-import SnapKit
-
-enum Sections: Int {
-    case trendingMovies = 0
-    case trendingTV = 1
-    case popular = 2
-    case upcomingMovies = 3
-    case topRated = 4
-}
 
 final class HomeVC: UIViewController {
     
     private var viewModel: HomeVCProtocol = HomeVCViewModel()
     
-    private let sectionTitles = ["Trending Movies", "Trending TV", "Popular",  "Upcoming Movies", "Top rated"]
-    
-    private let tableView: UITableView = {
+    private lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
-        table.register(CollectionViewTableViewCell .self, forCellReuseIdentifier: "\(CollectionViewTableViewCell .self)")
+        table.register(SectionTableViewCell .self, forCellReuseIdentifier: "\(SectionTableViewCell .self)")
         return table
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        viewModel.loadDataFromAPI()
         setupViews()
         setupLayouts()
         tableView.delegate = self
         tableView.dataSource = self
         setupNavigationBar()
+        bind()
+    }
+    
+    private func bind() {
+        viewModel.contentDidChanged = { [weak self] in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
     }
     
     private func setupViews() {
@@ -46,15 +45,12 @@ final class HomeVC: UIViewController {
     
     
     private func setupLayouts() {
-        tableView.snp.makeConstraints { make in
-            make.leading.top.trailing.bottom.equalToSuperview()
-        }
-        
+        tableView.frame = view.bounds
     }
     
     private func setupNavigationBar() {
         
-//        let image = UIImage(named: "netflixLogo")?.withRenderingMode(.alwaysOriginal)
+        //        let image = UIImage(named: "netflixLogo")?.withRenderingMode(.alwaysOriginal)
         let leftBarButton = UIBarButtonItem(image: UIImage(systemName: "n.circle.fill"), style: .done, target: self, action: nil)
         navigationItem.leftBarButtonItem = leftBarButton
         
@@ -65,21 +61,21 @@ final class HomeVC: UIViewController {
         
         navigationController?.navigationBar.tintColor = .label
     }
-
+    
 }
 
 
 extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sectionTitles.count
+        return viewModel.sectionTitles.count
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionTitles[section]
+        return viewModel.sectionTitles[section]
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -94,57 +90,9 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "\(CollectionViewTableViewCell .self)", for: indexPath) as? CollectionViewTableViewCell 
-        
-        switch indexPath.section {
-        case Sections.trendingMovies.rawValue:
-            
-            APICaller.shared.getMovies(fromYear: "2022", toYear: "2022") { result in
-                switch result {
-                case .success(let movies): cell?.setupCell(movies: movies)
-                case .failure(let error): print(error)
-                }
-            }
-            
-        case Sections.trendingTV.rawValue:
-          
-            APICaller.shared.getMovies(fromYear: "2020", toYear: "2022") { result in
-                switch result {
-                case .success(let movies): cell?.setupCell(movies: movies)
-                case .failure(let error): print(error)
-                }
-            }
-            
-        case Sections.popular.rawValue:
-            
-            APICaller.shared.getMovies(fromYear: "2018", toYear: "2020") { result in
-                switch result {
-                case .success(let movies): cell?.setupCell(movies: movies)
-                case .failure(let error): print(error)
-                }
-            }
-            
-        case Sections.upcomingMovies.rawValue:
-            
-            APICaller.shared.getMovies(fromYear: "2016", toYear: "2018") { result in
-                switch result {
-                case .success(let movies): cell?.setupCell(movies: movies)
-                case .failure(let error): print(error)
-                }
-            }
-            
-        case Sections.topRated.rawValue:
-            
-            APICaller.shared.getMovies(fromYear: "2014", toYear: "2016") { result in
-                switch result {
-                case .success(let movies): cell?.setupCell(movies: movies)
-                case .failure(let error): print(error)
-                }
-            }
-        default:
-            return UITableViewCell()
-        }
-                return cell ?? UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "\(SectionTableViewCell .self)", for: indexPath) as? SectionTableViewCell
+        viewModel.setupCollectionViewTableViewCell(indexPath: indexPath, cell: cell)
+        return cell ?? UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -6,9 +6,8 @@
 //
 
 import UIKit
-import SnapKit
 
-class CollectionViewTableViewCell : UITableViewCell {
+class SectionTableViewCell : UITableViewCell {
     
     private var movies: [Movie] = []
     
@@ -19,7 +18,6 @@ class CollectionViewTableViewCell : UITableViewCell {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "\(MovieCollectionViewCell.self)")
         collection.showsHorizontalScrollIndicator = false
-        
         return collection
     }()
 
@@ -39,13 +37,11 @@ class CollectionViewTableViewCell : UITableViewCell {
     }
     
     private func setupLayouts() {
-        collectionView.snp.makeConstraints { make in
-            make.leading.top.trailing.bottom.equalToSuperview()
-        }
+        collectionView.frame = contentView.bounds
     }
 }
 
-extension CollectionViewTableViewCell : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension SectionTableViewCell : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return movies.count
@@ -53,7 +49,6 @@ extension CollectionViewTableViewCell : UICollectionViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(MovieCollectionViewCell.self)", for: indexPath) as? MovieCollectionViewCell
-        //TODO: addMovie
         cell?.setupCell(movie: movies[indexPath.row])
         return cell ?? UICollectionViewCell()
     }

@@ -11,7 +11,6 @@ final class MainTabBarVC: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        view.backgroundColor = .cyan
         
         let vc1 = UINavigationController(rootViewController: HomeVC())
         let vc2 = UINavigationController(rootViewController: UpcomingVC())
@@ -30,11 +29,8 @@ final class MainTabBarVC: UITabBarController {
         
         tabBar.tintColor = .label
         
-        
         setViewControllers([vc1, vc2, vc3, vc4], animated: true )
-        
     }
-
 
 }
 

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SnapKit
 import UIKit
 
 //https://api.kinopoisk.dev/movie?field=rating.kp&search=7-10&token=ZQQ8GMN-TN54SGK-NB3MKEC-ZKB8V06
