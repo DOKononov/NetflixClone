@@ -32,6 +32,8 @@ class HeaderView: UIView {
         button.layer.borderColor = UIColor.systemBackground.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
+        button.layer.borderColor = UIColor.label.cgColor
+        button.setTitleColor(UIColor.label, for: .normal)
         
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -43,6 +45,8 @@ class HeaderView: UIView {
         button.layer.borderColor = UIColor.systemBackground.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
+        button.layer.borderColor = UIColor.label.cgColor
+        button.setTitleColor(UIColor.label, for: .normal)
 
         button.translatesAutoresizingMaskIntoConstraints = false
         return button

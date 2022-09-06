@@ -8,25 +8,30 @@
 import UIKit
 import SnapKit
 
-class CollectionViewTVC: UITableViewCell {
+class CollectionViewTableViewCell : UITableViewCell {
     
-    private lazy var collectionView: UICollectionView = {
+    private var movies: [Movie] = []
+    
+    private var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collection.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "\(MovieCollectionViewCell.self)")
         collection.showsHorizontalScrollIndicator = false
         
         return collection
     }()
 
-    func setupCell() {
-        contentView.backgroundColor = .systemPink
+    func setupCell(movies: [Movie]) {
         setupViews()
         setupLayouts()
         collectionView.delegate = self
         collectionView.dataSource = self
+        self.movies = movies
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+        }
     }
     
     private func setupViews() {
@@ -40,19 +45,24 @@ class CollectionViewTVC: UITableViewCell {
     }
 }
 
-extension CollectionViewTVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension CollectionViewTableViewCell : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return movies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = .green
-        return cell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(MovieCollectionViewCell.self)", for: indexPath) as? MovieCollectionViewCell
+        //TODO: addMovie
+        cell?.setupCell(movie: movies[indexPath.row])
+        return cell ?? UICollectionViewCell()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width * 0.33, height: collectionView.frame.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(movies[indexPath.row].name)
     }
 }

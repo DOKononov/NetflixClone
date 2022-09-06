@@ -8,13 +8,23 @@
 import UIKit
 import SnapKit
 
+enum Sections: Int {
+    case trendingMovies = 0
+    case trendingTV = 1
+    case popular = 2
+    case upcomingMovies = 3
+    case topRated = 4
+}
+
 final class HomeVC: UIViewController {
     
-    private let sectionTitles = ["Trending Movies", "Popular", "Trending TV", "Upcoming Movies", "Top rated"]
+    private var viewModel: HomeVCProtocol = HomeVCViewModel()
+    
+    private let sectionTitles = ["Trending Movies", "Trending TV", "Popular",  "Upcoming Movies", "Top rated"]
     
     private let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
-        table.register(CollectionViewTVC.self, forCellReuseIdentifier: "\(CollectionViewTVC.self)")
+        table.register(CollectionViewTableViewCell .self, forCellReuseIdentifier: "\(CollectionViewTableViewCell .self)")
         return table
     }()
 
@@ -54,7 +64,6 @@ final class HomeVC: UIViewController {
         ]
         
         navigationController?.navigationBar.tintColor = .label
-
     }
 
 }
@@ -81,13 +90,61 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
                               width: header.bounds.width,
                               height: header.bounds.height)
         header.textLabel?.textColor = .label
-        header.textLabel?.text = header.textLabel?.text?.capitalized
+        header.textLabel?.text = header.textLabel?.text?.capitalizeFirstLetter()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "\(CollectionViewTVC.self)", for: indexPath) as? CollectionViewTVC
-        cell?.setupCell()
-        return cell ?? UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "\(CollectionViewTableViewCell .self)", for: indexPath) as? CollectionViewTableViewCell 
+        
+        switch indexPath.section {
+        case Sections.trendingMovies.rawValue:
+            
+            APICaller.shared.getMovies(fromYear: "2022", toYear: "2022") { result in
+                switch result {
+                case .success(let movies): cell?.setupCell(movies: movies)
+                case .failure(let error): print(error)
+                }
+            }
+            
+        case Sections.trendingTV.rawValue:
+          
+            APICaller.shared.getMovies(fromYear: "2020", toYear: "2022") { result in
+                switch result {
+                case .success(let movies): cell?.setupCell(movies: movies)
+                case .failure(let error): print(error)
+                }
+            }
+            
+        case Sections.popular.rawValue:
+            
+            APICaller.shared.getMovies(fromYear: "2018", toYear: "2020") { result in
+                switch result {
+                case .success(let movies): cell?.setupCell(movies: movies)
+                case .failure(let error): print(error)
+                }
+            }
+            
+        case Sections.upcomingMovies.rawValue:
+            
+            APICaller.shared.getMovies(fromYear: "2016", toYear: "2018") { result in
+                switch result {
+                case .success(let movies): cell?.setupCell(movies: movies)
+                case .failure(let error): print(error)
+                }
+            }
+            
+        case Sections.topRated.rawValue:
+            
+            APICaller.shared.getMovies(fromYear: "2014", toYear: "2016") { result in
+                switch result {
+                case .success(let movies): cell?.setupCell(movies: movies)
+                case .failure(let error): print(error)
+                }
+            }
+        default:
+            return UITableViewCell()
+        }
+                return cell ?? UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
