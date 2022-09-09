@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		40019F0728C9E77C00EE6A9B /* UpcomingVCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40019F0628C9E77C00EE6A9B /* UpcomingVCViewModel.swift */; };
+		40019F0928C9EFB400EE6A9B /* UpcomingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40019F0828C9EFB400EE6A9B /* UpcomingTableViewCell.swift */; };
 		4003A85628C72AB400A96929 /* HomeVCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4003A85528C72AB400A96929 /* HomeVCViewModel.swift */; };
 		40818F8C28BE01A400328750 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40818F8B28BE01A400328750 /* AppDelegate.swift */; };
 		40818F8E28BE01A400328750 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40818F8D28BE01A400328750 /* SceneDelegate.swift */; };
@@ -30,6 +32,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		40019F0628C9E77C00EE6A9B /* UpcomingVCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingVCViewModel.swift; sourceTree = "<group>"; };
+		40019F0828C9EFB400EE6A9B /* UpcomingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingTableViewCell.swift; sourceTree = "<group>"; };
 		4003A85528C72AB400A96929 /* HomeVCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVCViewModel.swift; sourceTree = "<group>"; };
 		40818F8828BE01A400328750 /* NetflixClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetflixClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40818F8B28BE01A400328750 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +69,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		40019F0A28C9EFC300EE6A9B /* UpcomingVC */ = {
+			isa = PBXGroup;
+			children = (
+				4096729028BE378D005E1FC9 /* UpcomingVC.swift */,
+				40019F0628C9E77C00EE6A9B /* UpcomingVCViewModel.swift */,
+				40019F0828C9EFB400EE6A9B /* UpcomingTableViewCell.swift */,
+			);
+			path = UpcomingVC;
+			sourceTree = "<group>";
+		};
 		4003A85728C72B8C00A96929 /* HomeVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,7 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				4003A85728C72B8C00A96929 /* HomeVC */,
-				4096729028BE378D005E1FC9 /* UpcomingVC.swift */,
+				40019F0A28C9EFC300EE6A9B /* UpcomingVC */,
 				4096729228BE3799005E1FC9 /* SearchVC.swift */,
 				4096729428BE37A7005E1FC9 /* DownloadsVC.swift */,
 			);
@@ -277,6 +291,7 @@
 				40818F9628BE01A400328750 /* NetflixClone.xcdatamodeld in Sources */,
 				408A994A28C49BF400335713 /* String+CapitalizeFirstLetter.swift in Sources */,
 				40B3636028C373AB00C42551 /* Movie.swift in Sources */,
+				40019F0928C9EFB400EE6A9B /* UpcomingTableViewCell.swift in Sources */,
 				4096728F28BE377D005E1FC9 /* HomeVC.swift in Sources */,
 				40818F9028BE01A400328750 /* MainTabBarVC.swift in Sources */,
 				40818F8C28BE01A400328750 /* AppDelegate.swift in Sources */,
@@ -284,6 +299,7 @@
 				4096729128BE378D005E1FC9 /* UpcomingVC.swift in Sources */,
 				40818F8E28BE01A400328750 /* SceneDelegate.swift in Sources */,
 				40A5546428C23989002630A6 /* APICaller.swift in Sources */,
+				40019F0728C9E77C00EE6A9B /* UpcomingVCViewModel.swift in Sources */,
 				408A994C28C6582F00335713 /* MovieCollectionViewCell.swift in Sources */,
 				4003A85628C72AB400A96929 /* HomeVCViewModel.swift in Sources */,
 				409672A128BE3FB9005E1FC9 /* SectionTableViewCell.swift in Sources */,

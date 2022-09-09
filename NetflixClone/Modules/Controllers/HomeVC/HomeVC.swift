@@ -50,7 +50,9 @@ final class HomeVC: UIViewController {
     
     private func setupNavigationBar() {
         
-        //        let image = UIImage(named: "netflixLogo")?.withRenderingMode(.alwaysOriginal)
+//        let image = UIImage(named: "netflixLogo")
+//        image?.withRenderingMode(.alwaysOriginal)
+        
         let leftBarButton = UIBarButtonItem(image: UIImage(systemName: "n.circle.fill"), style: .done, target: self, action: nil)
         navigationItem.leftBarButtonItem = leftBarButton
         
