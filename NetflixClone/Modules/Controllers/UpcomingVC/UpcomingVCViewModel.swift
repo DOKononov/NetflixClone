@@ -25,10 +25,10 @@ final class UpcomingVCViewModel: UpcomingVCProtocol {
     var contentDidChanged: (() -> Void)?
     
     func loadDataFromAPI() {
-        APICaller.shared.getMovies(fromYear: "2022", toYear: "2022") { [weak self] result in
+        NetworkService.shared.getMovies(fromYear: "2022", toYear: "2022") { [weak self] result in
             switch result {
             case .success(let movies):
-                self?.movies = movies
+                self?.movies = movies ?? []
             case .failure(let error):
                 print(error.localizedDescription)
             }

@@ -43,7 +43,7 @@ final class HomeVCViewModel: HomeVCProtocol {
     }
     
     private func loadCategory(fromYear: String, toYear: String, to section: Sections) {
-        APICaller.shared.getMovies(fromYear: fromYear, toYear: toYear) { result in
+        NetworkService.shared.getMovies(fromYear: fromYear, toYear: toYear) { result in
             switch result {
             case .success(let movies): self.moviesDict[section] = movies
             case .failure(let error): print(error)

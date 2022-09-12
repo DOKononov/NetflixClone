@@ -12,7 +12,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
         
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleToFill
         
         return imageView
     }()

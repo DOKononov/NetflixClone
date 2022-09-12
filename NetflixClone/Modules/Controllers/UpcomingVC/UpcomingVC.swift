@@ -13,7 +13,7 @@ final class UpcomingVC: UIViewController {
     
     let tableView: UITableView = {
         let table = UITableView()
-        table.register(UpcomingTableViewCell.self, forCellReuseIdentifier: "\(UpcomingTableViewCell.self)")
+        table.register(MovieListTableViewCell.self, forCellReuseIdentifier: "\(MovieListTableViewCell.self)")
         return table
     }()
     
@@ -41,9 +41,9 @@ final class UpcomingVC: UIViewController {
     }
     
     private func bind() {
-        viewModel.contentDidChanged = {
+        viewModel.contentDidChanged = { [weak self] in
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                self?.tableView.reloadData()
             }
         }
     }
@@ -57,13 +57,13 @@ extension UpcomingVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "\(UpcomingTableViewCell.self)", for: indexPath) as? UpcomingTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "\(MovieListTableViewCell.self)", for: indexPath) as? MovieListTableViewCell
         cell?.setupCell(with: viewModel.movies[indexPath.row])
         return cell ?? UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        150
+        MovieListTableViewCell.rowHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

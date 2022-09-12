@@ -58,6 +58,6 @@ extension SectionTableViewCell : UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(movies[indexPath.row].name)
+//        print(movies[indexPath.row].name)
     }
 }

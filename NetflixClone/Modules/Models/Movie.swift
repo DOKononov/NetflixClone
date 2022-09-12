@@ -8,28 +8,32 @@
 import Foundation
 
 struct KinopoiskResponce: Codable {
-    let docs: [Movie]
-    let total, limit, page, pages: Int
+    let docs: [Movie]?
+//    let total, limit, page, pages: Int
 }
 
 struct Movie: Codable {
     let externalID: MovieExternalID
     let poster: MoviePoster
-    let rating, votes: MovieRating
+//    let rating, votes: MovieRating
+    let rating: MovieRating
+    let movieLength: Int?
     let id: Int
-    let type: MovieType
-    let name, docDescription: String
+//    let type: MovieType
+    let name, docDescription: String?
     let year: Int
-    let alternativeName: String
+    let alternativeName: String?
     let names: [MovieName]
-    let shortDescription: String?
-    let color: String?
+//    let shortDescription: String?
+//    let color: String?
 
     enum CodingKeys: String, CodingKey {
         case externalID = "externalId"
-        case poster, rating, votes, id, type, name
+        case poster, rating//, votes, 
+        case movieLength, id//, type,
+        case name
         case docDescription = "description"
-        case year, alternativeName, names, shortDescription, color
+        case year, alternativeName, names//, shortDescription//, color
     }
 }
 
@@ -64,18 +68,17 @@ struct MoviePoster: Codable {
 }
 
 struct MovieRating: Codable {
-    let id: String
-    let kp, imdb: Double
-    let filmCritics: Int
-    let russianFilmCritics, await: Double
+    let id: String?
+    let kp, imdb: Double?
+    let filmCritics: Double?
 
     enum CodingKeys: String, CodingKey {
         case id = "_id"
-        case kp, imdb, filmCritics, russianFilmCritics, await
+        case kp, imdb, filmCritics
     }
 }
 
-enum MovieType: String, Codable {
-    case tvSeries = "tv-series"
-}
-
+//enum MovieType: String, Codable {
+//    case tvSeries = "tv-series"
+//    case movie
+//}

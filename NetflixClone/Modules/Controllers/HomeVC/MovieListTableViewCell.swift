@@ -8,7 +8,9 @@
 import UIKit
 import SnapKit
 
-class UpcomingTableViewCell: UITableViewCell {
+class MovieListTableViewCell: UITableViewCell {
+    
+    static let rowHeight: CGFloat = 150
     
     private let upcomingImageView: UIImageView = {
         let imageView = UIImageView()
