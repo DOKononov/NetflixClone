@@ -12,6 +12,7 @@ protocol SearchVCProtocol {
     var contentDidChanged: (() -> Void)? { get set }
     var networkService: NetworkService { get }
     func loadMovies()
+    func loadSearchResults(for movie: String, complition: @escaping ((Result<[Movie], Error>) -> Void))
 }
 
 final class SearchVCViewModel: SearchVCProtocol {
@@ -32,6 +33,17 @@ final class SearchVCViewModel: SearchVCProtocol {
                 print(error.localizedDescription)
             case .success(let movies):
                 self?.movies = movies ?? []
+            }
+        }
+    }
+    
+    func loadSearchResults(for movie: String, complition: @escaping ((Result<[Movie], Error>) -> Void)) {
+        networkService.serchFor(movie: movie) { result in
+            switch result {
+            case .success(let movies):
+                complition(.success(movies))
+            case .failure(let error):
+                complition(.failure(error))
             }
         }
     }

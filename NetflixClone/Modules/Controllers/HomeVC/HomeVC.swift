@@ -27,6 +27,7 @@ final class HomeVC: UIViewController {
         tableView.dataSource = self
         setupNavigationBar()
         bind()
+
     }
     
     private func bind() {

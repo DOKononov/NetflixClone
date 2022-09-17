@@ -10,6 +10,7 @@ import UIKit
 class SectionTableViewCell : UITableViewCell {
     
     private var movies: [Movie] = []
+    private var networkService = NetworkService.shared
     
     private var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -58,6 +59,16 @@ extension SectionTableViewCell : UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        print(movies[indexPath.row].name)
+        collectionView.deselectItem(at: indexPath, animated: true)
+        
+        guard let movieName = movies[indexPath.row].name else { return }
+        networkService.getYTVideoData(for: movieName + " trailer") { result in
+            switch result {
+            case .success(let videoElement):
+                print(videoElement.id)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }

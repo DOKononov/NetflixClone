@@ -14,6 +14,8 @@ import UIKit
 struct Constance {
     static let API_KEY = "ZQQ8GMN-TN54SGK-NB3MKEC-ZKB8V06"
     static let baseURL = "https://api.kinopoisk.dev/movie"
+    static let youtubeAPI_KEY = "AIzaSyDSKUtZZzm0YnUXwqeWE4E5c4cyBcwkD4A"
+    static let youtubeBaseURL = "https://youtube.googleapis.com/youtube/v3/search?"
 }
 
 enum APIErrors: Error {
@@ -32,7 +34,7 @@ final class NetworkService {
                             + "&sortField=year&sortType=1"
                             + "&sortField=votes.imdb&sortType=-1"
                             + "&token=" +  Constance.API_KEY) else { return }
-        
+        print("KP url:  \(url)")
         URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else { return }
             do {
@@ -49,10 +51,6 @@ final class NetworkService {
     
     func serchFor(movie: String, complition: @escaping (Result<[Movie], Error>) -> Void) {
         
-//        guard let movie = movie.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
-//            return
-//        }
-        
         let str = (Constance.baseURL
                 + "?search="
                 + movie
@@ -64,7 +62,7 @@ final class NetworkService {
         
         print(url)
         URLSession.shared.dataTask(with: url) { data, resonce, error in
-            guard let data = data, resonce != nil else { return }
+            guard let data = data, error == nil else { return }
             do {
                 let result = try JSONDecoder().decode(KinopoiskResponce.self, from: data)
                 DispatchQueue.main.async {
@@ -76,6 +74,27 @@ final class NetworkService {
             }
 
         }.resume()
+    }
+    
+    func getYTVideoData(for movie: String, complition: @escaping (Result<VideoElement, Error>) -> Void) {
+        guard let movie = movie.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        guard let url = URL(string: "\(Constance.youtubeBaseURL)q=\(movie)&key=\(Constance.youtubeAPI_KEY)") else { return }
+        
+        print("YT url: \(url)")
+        URLSession.shared.dataTask(with: url) { data, responce, error in
+            guard let data = data, error == nil else { return }
+            do {
+                let result = try JSONDecoder().decode(YoutubeSearchResponce.self, from: data)
+                complition(.success(result.items[0]))
+            }
+            
+            catch {
+                complition(.failure(error))
+//                print(error.localizedDescription)
+            }
+
+        }.resume()
+        
     }
     
     

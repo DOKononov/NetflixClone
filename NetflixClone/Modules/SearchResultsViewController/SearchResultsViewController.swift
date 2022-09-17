@@ -10,13 +10,13 @@ import SnapKit
 
 class SearchResultsViewController: UIViewController {
     
-    var viewModel: SearchResultsProtocol = SearchResultsViewModel()
+    public var viewModel: SearchResultsProtocol = SearchResultsViewModel()
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3 - (8 * 4),
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3 - 10,
                                  height: 200)
-        layout.minimumInteritemSpacing = 8
+//        layout.minimumInteritemSpacing = 8
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "\(MovieCollectionViewCell.self)")
@@ -40,12 +40,12 @@ class SearchResultsViewController: UIViewController {
     }
     
     private func setupLayouts() {
-//        collectionView.frame = view.bounds
-        collectionView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(8)
-            make.trailing.equalToSuperview().offset(-8)
-            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
-        }
+        collectionView.frame = view.bounds
+//        collectionView.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().offset(8)
+//            make.trailing.equalToSuperview().offset(-8)
+//            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
+//        }
     }
     
     private func bind() {

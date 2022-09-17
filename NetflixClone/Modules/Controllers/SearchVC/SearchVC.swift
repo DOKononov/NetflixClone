@@ -91,12 +91,13 @@ extension SearchVC: UISearchResultsUpdating {
             return
         }
         
-        NetworkService.shared.serchFor(movie: movie) { result in
+        viewModel.loadSearchResults(for: movie) { result in
             switch result {
             case .success(let movies):
                 resultsController.viewModel.movies = movies
             case .failure(let error):
-                print(error)
+                resultsController.viewModel.movies = []
+                print(error.localizedDescription)
             }
         }
               
