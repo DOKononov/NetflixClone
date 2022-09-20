@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol SectionTableViewCellDelegate: AnyObject {
+    func cellDidTapped(_ cell: SectionTableViewCell, trailerModel: MovieTrailer)
+}
+
 class SectionTableViewCell : UITableViewCell {
+    
+    weak var delegate: SectionTableViewCellDelegate?
     
     private var movies: [Movie] = []
     private var networkService = NetworkService.shared
@@ -61,11 +67,19 @@ extension SectionTableViewCell : UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        guard let movieName = movies[indexPath.row].name else { return }
-        networkService.getYTVideoData(for: movieName + " trailer") { result in
+        let movie = movies[indexPath.row]
+        
+        networkService.getYTVideoData(for: movie.name ?? "no name" + " trailer") { [weak self] result in
             switch result {
             case .success(let videoElement):
-                print(videoElement.id)
+                
+                let trailer = MovieTrailer(name: movie.name ?? "no name",
+                                           description: movie.docDescription ?? "no description",
+                                           videoElement: videoElement)
+                
+                guard let strongSelf = self else { return }
+                
+                self?.delegate?.cellDidTapped(strongSelf, trailerModel: trailer)
             case .failure(let error):
                 print(error.localizedDescription)
             }

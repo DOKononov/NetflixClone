@@ -94,6 +94,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(SectionTableViewCell .self)", for: indexPath) as? SectionTableViewCell
+        cell?.delegate = self
         viewModel.setupCollectionViewTableViewCell(indexPath: indexPath, cell: cell)
         return cell ?? UITableViewCell()
     }
@@ -111,4 +112,17 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         let offset = scrollView.contentOffset.y + defaultOffset
         navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
     }
+}
+
+
+extension HomeVC: SectionTableViewCellDelegate {
+    func cellDidTapped(_ cell: SectionTableViewCell, trailerModel: MovieTrailer) {
+        DispatchQueue.main.async { [weak self] in
+            let vc = MovieTrailerVC()
+            vc.setupVC(for: trailerModel)
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    
 }
