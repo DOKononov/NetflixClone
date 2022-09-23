@@ -16,7 +16,7 @@ protocol SearchVCProtocol {
 }
 
 final class SearchVCViewModel: SearchVCProtocol {
-    var networkService: NetworkService = NetworkService.shared
+    var networkService = NetworkService()
     
     var movies: [Movie] = [] {
         didSet {

@@ -32,7 +32,7 @@ final class UpcomingVC: UIViewController {
         title = "Upcoming"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
-        
+        navigationController?.navigationBar.tintColor = .label
         view.addSubview(tableView)
     }
     
@@ -68,6 +68,28 @@ extension UpcomingVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        viewModel.didSelectMovie(at: indexPath) { [weak self] in
+            DispatchQueue.main.async {
+                let vc = MovieTrailerVC()
+                vc.setupVC(for: self?.viewModel.trailer)
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
+        
+        
+
     }
     
 }
+
+//extension UpcomingVC: SectionTableViewCellDelegate {
+//    func cellDidTapped(_ cell: SectionTableViewCell, trailerModel: MovieTrailer) {
+//        DispatchQueue.main.async { [weak self] in
+//            let vc = MovieTrailerVC()
+//            vc.setupVC(for: trailerModel)
+//            self?.navigationController?.pushViewController(vc, animated: true)
+//        }
+//    }
+//
+//
+//}

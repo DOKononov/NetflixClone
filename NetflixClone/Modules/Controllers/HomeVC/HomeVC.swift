@@ -17,6 +17,13 @@ final class HomeVC: UIViewController {
         return table
     }()
     
+    private let headerView: HeaderView = {
+        let view = HeaderView(frame: CGRect(x: 0, y: 0,
+                                            width: UIScreen.main.bounds.width,
+                                            height: 450))
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -26,6 +33,7 @@ final class HomeVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         setupNavigationBar()
+        viewModel.getRandomMovie()
         bind()
 
     }
@@ -36,12 +44,22 @@ final class HomeVC: UIViewController {
                 self?.tableView.reloadData()
             }
         }
+        
+        viewModel.randomMovieDidSet = { [weak self] in
+            DispatchQueue.main.async {
+                self?.headerView.setupView(for: self?.viewModel.randomHeaderMovie)
+            }
+            
+        }
     }
+    
+//    private func setupHeaderView() {
+//        headerView.setupView(for: viewModel.randomHeaderMovie)
+//    }
     
     private func setupViews() {
         view.addSubview(tableView)
-        tableView.tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: view.bounds.width,
-                                                             height: 450))
+        tableView.tableHeaderView = headerView
     }
     
     
@@ -118,6 +136,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
 extension HomeVC: SectionTableViewCellDelegate {
     func cellDidTapped(_ cell: SectionTableViewCell, trailerModel: MovieTrailer) {
         DispatchQueue.main.async { [weak self] in
+            self?.navigationController?.navigationBar.transform = .identity
             let vc = MovieTrailerVC()
             vc.setupVC(for: trailerModel)
             self?.navigationController?.pushViewController(vc, animated: true)

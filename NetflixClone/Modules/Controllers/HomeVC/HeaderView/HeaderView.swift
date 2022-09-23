@@ -9,17 +9,16 @@ import UIKit
 import SnapKit
 
 class HeaderView: UIView {
-
+    
     private let imageView: UIImageView = {
-       let imageView = UIImageView()
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.image = UIImage(named: "heroImage")
         return imageView
     }()
     
     private let gradient: CAGradientLayer = {
-       let gradient = CAGradientLayer()
+        let gradient = CAGradientLayer()
         gradient.colors = [
             UIColor.clear.cgColor,
             UIColor.systemBackground.cgColor
@@ -41,14 +40,14 @@ class HeaderView: UIView {
     }()
     
     private let downloadButton: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
         button.setTitle("Download", for: .normal)
         button.layer.borderColor = UIColor.systemBackground.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 5
         button.layer.borderColor = UIColor.label.cgColor
         button.setTitleColor(UIColor.label, for: .normal)
-
+        
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -62,7 +61,7 @@ class HeaderView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     
     private func setupViews() {
         addSubview(imageView)
@@ -88,6 +87,16 @@ class HeaderView: UIView {
         }
     }
     
-
-
+    public func setupView(for movie: Movie?) {
+        if let movie = movie {
+            guard let url = URL(string: movie.poster.url) else { return }
+            imageView.sd_setImage(with: url)
+        } else {
+            imageView.image = UIImage(named: "heroImage")
+        }
+        
+    }
+    
+    
+    
 }

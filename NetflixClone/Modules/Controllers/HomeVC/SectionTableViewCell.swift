@@ -16,7 +16,7 @@ class SectionTableViewCell : UITableViewCell {
     weak var delegate: SectionTableViewCellDelegate?
     
     private var movies: [Movie] = []
-    private var networkService = NetworkService.shared
+    private var networkService = NetworkService()
     
     private var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -69,16 +69,10 @@ extension SectionTableViewCell : UICollectionViewDelegate, UICollectionViewDataS
         
         let movie = movies[indexPath.row]
         
-        networkService.getYTVideoData(for: movie.name ?? "no name" + " trailer") { [weak self] result in
+        networkService.getYTVideoData(for: movie) { [weak self] result in
             switch result {
-            case .success(let videoElement):
-                
-                let trailer = MovieTrailer(name: movie.name ?? "no name",
-                                           description: movie.docDescription ?? "no description",
-                                           videoElement: videoElement)
-                
+            case .success(let trailer):
                 guard let strongSelf = self else { return }
-                
                 self?.delegate?.cellDidTapped(strongSelf, trailerModel: trailer)
             case .failure(let error):
                 print(error.localizedDescription)

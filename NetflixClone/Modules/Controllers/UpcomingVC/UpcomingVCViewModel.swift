@@ -11,11 +11,14 @@ protocol UpcomingVCProtocol {
     var movies: [Movie] { get set }
     var contentDidChanged: (() -> Void)? { get set }
     func loadDataFromAPI()
+    func didSelectMovie(at indexPath: IndexPath, complition: @escaping () -> Void) 
+    var trailer: MovieTrailer? { get set }
 }
 
 final class UpcomingVCViewModel: UpcomingVCProtocol {
  
-    
+    var trailer: MovieTrailer?
+    var networkService = NetworkService()
     var movies: [Movie] = [] {
         didSet {
             contentDidChanged?()
@@ -25,12 +28,27 @@ final class UpcomingVCViewModel: UpcomingVCProtocol {
     var contentDidChanged: (() -> Void)?
     
     func loadDataFromAPI() {
-        NetworkService.shared.getMovies(fromYear: "2022", toYear: "2022") { [weak self] result in
+        networkService.getMovies(fromYear: "2022", toYear: "2022") { [weak self] result in
             switch result {
             case .success(let movies):
                 self?.movies = movies ?? []
             case .failure(let error):
                 print(error.localizedDescription)
+            }
+        }
+    }
+    
+    //TODO: complition
+    func didSelectMovie(at indexPath: IndexPath, complition: @escaping () -> Void) {
+        let movie = movies[indexPath.row]
+        networkService.getYTVideoData(for: movie) { [weak self] result in
+            switch result {
+            case.failure(let error):
+                print(error.localizedDescription)
+//                complition()
+            case.success(let trailer):
+                self?.trailer = trailer
+                complition()
             }
         }
     }

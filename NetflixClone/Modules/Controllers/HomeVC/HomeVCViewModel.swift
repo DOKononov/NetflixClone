@@ -19,12 +19,23 @@ protocol HomeVCProtocol {
     var sectionTitles: [String] { get }
     var moviesDict: [Sections: [Movie]] { get set }
     var contentDidChanged: (() -> Void)? { get set }
+    var randomMovieDidSet: (()-> Void)? { get set }
     func loadDataFromAPI()
     func setupCollectionViewTableViewCell(indexPath: IndexPath, cell: SectionTableViewCell?)
+    var randomHeaderMovie: Movie? { get set }
+    func getRandomMovie()
     
 }
 
 final class HomeVCViewModel: HomeVCProtocol {
+    var randomMovieDidSet: (() -> Void)?
+    var randomHeaderMovie: Movie? {
+        didSet {
+            randomMovieDidSet?()
+        }
+    }
+    
+    var networkService = NetworkService()
     var sectionTitles = ["Trending Movies", "Trending TV", "Popular",  "Upcoming Movies", "Top rated"]
     var moviesDict: [Sections: [Movie]] = [:] {
         didSet {
@@ -43,7 +54,7 @@ final class HomeVCViewModel: HomeVCProtocol {
     }
     
     private func loadCategory(fromYear: String, toYear: String, to section: Sections) {
-        NetworkService.shared.getMovies(fromYear: fromYear, toYear: toYear) { result in
+        networkService.getMovies(fromYear: fromYear, toYear: toYear) { result in
             switch result {
             case .success(let movies): self.moviesDict[section] = movies
             case .failure(let error): print(error)
@@ -52,22 +63,33 @@ final class HomeVCViewModel: HomeVCProtocol {
     }
     
     
-        func setupCollectionViewTableViewCell(indexPath: IndexPath, cell: SectionTableViewCell?) {
-            switch indexPath.section {
-            case Sections.trendingMovies.rawValue:
-                cell?.setupCell(movies: moviesDict[Sections.trendingMovies] ?? [])
-            case Sections.trendingTV.rawValue:
-                cell?.setupCell(movies: moviesDict[Sections.trendingTV] ?? [])
-            case Sections.popular.rawValue:
-                cell?.setupCell(movies: moviesDict[Sections.popular] ?? [])
-            case Sections.upcomingMovies.rawValue:
-                cell?.setupCell(movies: moviesDict[Sections.upcomingMovies] ?? [])
-            case Sections.topRated.rawValue:
-                cell?.setupCell(movies: moviesDict[Sections.topRated] ?? [])
-            default:
-                break
-            }
+    func setupCollectionViewTableViewCell(indexPath: IndexPath, cell: SectionTableViewCell?) {
+        switch indexPath.section {
+        case Sections.trendingMovies.rawValue:
+            cell?.setupCell(movies: moviesDict[Sections.trendingMovies] ?? [])
+        case Sections.trendingTV.rawValue:
+            cell?.setupCell(movies: moviesDict[Sections.trendingTV] ?? [])
+        case Sections.popular.rawValue:
+            cell?.setupCell(movies: moviesDict[Sections.popular] ?? [])
+        case Sections.upcomingMovies.rawValue:
+            cell?.setupCell(movies: moviesDict[Sections.upcomingMovies] ?? [])
+        case Sections.topRated.rawValue:
+            cell?.setupCell(movies: moviesDict[Sections.topRated] ?? [])
+        default:
+            break
+        }
         
+    }
+    
+    func getRandomMovie() {
+        networkService.getMovies(fromYear: "2010", toYear: "2020") { [weak self] result in
+            switch result {
+            case .failure(let error):
+                print(error.localizedDescription)
+            case .success(let movies):
+                self?.randomHeaderMovie = movies?.randomElement()
+            }
+        }
     }
     
 }

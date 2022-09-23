@@ -20,11 +20,12 @@ struct Constance {
 
 enum APIErrors: Error {
     case failedToLoadData
+    case movieTrailerError
 }
 
 final class NetworkService {
-    static let shared = NetworkService()
-    private init(){}
+//    static let shared = NetworkService()
+//    private init(){}
     
     func getMovies(fromYear: String, toYear: String, complition: @escaping (Result<[Movie]?, Error>) -> Void) {
         guard let url = URL(string: Constance.baseURL
@@ -34,7 +35,6 @@ final class NetworkService {
                             + "&sortField=year&sortType=1"
                             + "&sortField=votes.imdb&sortType=-1"
                             + "&token=" +  Constance.API_KEY) else { return }
-        print("KP url:  \(url)")
         URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else { return }
             do {
@@ -60,7 +60,6 @@ final class NetworkService {
                 
         guard let url = URL(string: str) else { return }
         
-        print(url)
         URLSession.shared.dataTask(with: url) { data, resonce, error in
             guard let data = data, error == nil else { return }
             do {
@@ -76,25 +75,34 @@ final class NetworkService {
         }.resume()
     }
     
-    func getYTVideoData(for movie: String, complition: @escaping (Result<VideoElement, Error>) -> Void) {
-        guard let movie = movie.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
-        guard let url = URL(string: "\(Constance.youtubeBaseURL)q=\(movie)&key=\(Constance.youtubeAPI_KEY)") else { return }
+    func getYTVideoData(for movie: Movie, complition: @escaping (Result<MovieTrailer, Error>) -> Void) {
+        guard let movieName = movie.name?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        guard let url = URL(string: "\(Constance.youtubeBaseURL)q=\(movieName)&key=\(Constance.youtubeAPI_KEY)") else { return }
         
-        print("YT url: \(url)")
+//        print("YT url: \(url)")
         URLSession.shared.dataTask(with: url) { data, responce, error in
             guard let data = data, error == nil else { return }
             do {
                 let result = try JSONDecoder().decode(YoutubeSearchResponce.self, from: data)
-                complition(.success(result.items[0]))
+                if let movieTrailer = self.makeMovieTrailerModel(movie: movie, youtubeSearch: result){
+                    complition(.success(movieTrailer))
+                } else {
+                    complition(.failure(APIErrors.movieTrailerError))
+                }
             }
             
             catch {
                 complition(.failure(error))
-//                print(error.localizedDescription)
             }
 
         }.resume()
-        
+    }
+    
+    private func makeMovieTrailerModel(movie: Movie, youtubeSearch: YoutubeSearchResponce) -> MovieTrailer? {
+        guard let element = youtubeSearch.items.first else {return nil}
+        return MovieTrailer(name: movie.name ?? "no name",
+                            description: movie.docDescription ?? "no description",
+                            videoElement: element)
     }
     
     
