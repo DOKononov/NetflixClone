@@ -77,7 +77,7 @@ class MovieListTableViewCell: UITableViewCell {
     }
     
     private func loadImage(for movie: Movie) {
-        guard let url = URL(string: movie.poster.url) else { return }
+        guard let poster = movie.poster?.url, let url = URL(string: poster) else { return }
         upcomingImageView.sd_setImage(with: url)
     }
     

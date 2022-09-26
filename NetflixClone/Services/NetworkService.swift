@@ -35,6 +35,7 @@ final class NetworkService {
                             + "&sortField=year&sortType=1"
                             + "&sortField=votes.imdb&sortType=-1"
                             + "&token=" +  Constance.API_KEY) else { return }
+//        print(url)
         URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else { return }
             do {
@@ -59,7 +60,7 @@ final class NetworkService {
                 + "&token=" + Constance.API_KEY)
                 
         guard let url = URL(string: str) else { return }
-        
+        print(url)
         URLSession.shared.dataTask(with: url) { data, resonce, error in
             guard let data = data, error == nil else { return }
             do {
@@ -79,7 +80,6 @@ final class NetworkService {
         guard let movieName = movie.name?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
         guard let url = URL(string: "\(Constance.youtubeBaseURL)q=\(movieName)&key=\(Constance.youtubeAPI_KEY)") else { return }
         
-//        print("YT url: \(url)")
         URLSession.shared.dataTask(with: url) { data, responce, error in
             guard let data = data, error == nil else { return }
             do {

@@ -38,14 +38,12 @@ final class UpcomingVCViewModel: UpcomingVCProtocol {
         }
     }
     
-    //TODO: complition
     func didSelectMovie(at indexPath: IndexPath, complition: @escaping () -> Void) {
         let movie = movies[indexPath.row]
         networkService.getYTVideoData(for: movie) { [weak self] result in
             switch result {
             case.failure(let error):
                 print(error.localizedDescription)
-//                complition()
             case.success(let trailer):
                 self?.trailer = trailer
                 complition()

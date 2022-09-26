@@ -20,6 +20,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
     private let activityIndicator: UIActivityIndicatorView = {
        let indicator = UIActivityIndicatorView()
         indicator.style = .large
+        indicator.hidesWhenStopped = true
         return indicator
     }()
     
@@ -41,12 +42,17 @@ class MovieCollectionViewCell: UICollectionViewCell {
     }
     
     private func setImage(movie: Movie) {
-        let url = URL(string: movie.poster.previewURL)
-        posterImageView.sd_setImage(with: url ) { _,_,_,_  in
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-                self.activityIndicator.isHidden = true
+        if let poster = movie.poster?.previewURL {
+            
+            let url = URL(string: poster)
+            posterImageView.sd_setImage(with: url ) { _,_,_,_  in
+                DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
+                }
             }
+        } else {
+            activityIndicator.stopAnimating()
+            posterImageView.image = UIImage(named: "imagePlaceholder")
         }
     }
     

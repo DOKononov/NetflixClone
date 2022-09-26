@@ -77,10 +77,31 @@ extension SearchVC : UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return MovieListTableViewCell.rowHeight
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        viewModel.didSelectMovie(at: indexPath) { [weak self] in
+            DispatchQueue.main.async {
+                let vc = MovieTrailerVC()
+                vc.setupVC(for: self?.viewModel.trailer)
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+
+        }
+    }
 }
 
 
-extension SearchVC: UISearchResultsUpdating {
+extension SearchVC: UISearchResultsUpdating, SearchResultsDelegate {
+    func searchResaltDidTapped(trailer: MovieTrailer?) {
+        DispatchQueue.main.async { [weak self] in
+            let vc = MovieTrailerVC()
+            vc.setupVC(for: trailer)
+            self?.present(vc, animated: true)
+        }
+    }
+    
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = searchController.searchBar
         
@@ -90,6 +111,8 @@ extension SearchVC: UISearchResultsUpdating {
               let resultsController = searchController.searchResultsController as? SearchResultsViewController else {
             return
         }
+        
+        resultsController.delegate = self
         
         viewModel.loadSearchResults(for: movie) { result in
             switch result {

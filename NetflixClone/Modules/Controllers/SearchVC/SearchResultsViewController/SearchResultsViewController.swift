@@ -8,7 +8,13 @@
 import UIKit
 import SnapKit
 
+protocol SearchResultsDelegate: AnyObject {
+    func searchResaltDidTapped(trailer: MovieTrailer?)
+}
+
 class SearchResultsViewController: UIViewController {
+    
+    weak var delegate: SearchResultsDelegate?
     
     public var viewModel: SearchResultsProtocol = SearchResultsViewModel()
     
@@ -16,7 +22,6 @@ class SearchResultsViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3 - 10,
                                  height: 200)
-//        layout.minimumInteritemSpacing = 8
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "\(MovieCollectionViewCell.self)")
@@ -41,11 +46,7 @@ class SearchResultsViewController: UIViewController {
     
     private func setupLayouts() {
         collectionView.frame = view.bounds
-//        collectionView.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().offset(8)
-//            make.trailing.equalToSuperview().offset(-8)
-//            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
-//        }
+
     }
     
     private func bind() {
@@ -69,5 +70,11 @@ extension SearchResultsViewController: UICollectionViewDelegate, UICollectionVie
         return cell ?? UICollectionViewCell()
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        viewModel.didSelectMovie(at: indexPath) {
+            self.delegate?.searchResaltDidTapped(trailer: self.viewModel.trailer)
+        }
+    }
     
 }

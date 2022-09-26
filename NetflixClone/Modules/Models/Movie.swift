@@ -13,8 +13,8 @@ struct KinopoiskResponce: Codable {
 }
 
 struct Movie: Codable {
-    let externalID: MovieExternalID
-    let poster: MoviePoster
+//    let externalID: MovieExternalID
+    let poster: MoviePoster?
 //    let rating, votes: MovieRating
     let rating: MovieRating
     let movieLength: Int?
@@ -23,29 +23,31 @@ struct Movie: Codable {
     let name, docDescription: String?
     let year: Int
     let alternativeName: String?
-    let names: [MovieName]
+//    let names: [MovieName]
 //    let shortDescription: String?
 //    let color: String?
 
     enum CodingKeys: String, CodingKey {
-        case externalID = "externalId"
+//        case externalID = "externalId"
         case poster, rating//, votes, 
         case movieLength, id//, type,
         case name
         case docDescription = "description"
-        case year, alternativeName, names//, shortDescription//, color
+        case year
+        case alternativeName
+//        case names, shortDescription, color
     }
 }
 
-struct MovieExternalID: Codable {
-    let id: String
-    let imdb: String?
-
-    enum CodingKeys: String, CodingKey {
-        case id = "_id"
-        case imdb
-    }
-}
+//struct MovieExternalID: Codable {
+//    let id: String
+//    let imdb: String?
+//
+//    enum CodingKeys: String, CodingKey {
+//        case id = "_id"
+//        case imdb
+//    }
+//}
 
 struct MovieName: Codable {
     let id, name: String

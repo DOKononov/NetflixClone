@@ -89,7 +89,7 @@ class HeaderView: UIView {
     
     public func setupView(for movie: Movie?) {
         if let movie = movie {
-            guard let url = URL(string: movie.poster.url) else { return }
+            guard let poster = movie.poster?.url, let url = URL(string: poster) else { return }
             imageView.sd_setImage(with: url)
         } else {
             imageView.image = UIImage(named: "heroImage")

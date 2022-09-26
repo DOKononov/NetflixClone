@@ -27,6 +27,17 @@ class SectionTableViewCell : UITableViewCell {
         collection.showsHorizontalScrollIndicator = false
         return collection
     }()
+    
+    private func downloadDidTapped(at indexPath: IndexPath) {
+        CoreDataService.shared.download(for: movies[indexPath.row]) { result in
+            switch result {
+            case .success():
+                print("succcess")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
 
     func setupCell(movies: [Movie]) {
         setupViews()
@@ -79,4 +90,21 @@ extension SectionTableViewCell : UICollectionViewDelegate, UICollectionViewDataS
             }
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let config = UIContextMenuConfiguration(identifier: nil,
+                                                previewProvider: nil) { [weak self] _ in
+            let downloadAction = UIAction(title: "Download",
+                                          image: nil,
+                                          identifier: nil,
+                                          discoverabilityTitle: nil,
+                                          state: .off) { _ in
+                self?.downloadDidTapped(at: indexPath)
+            }
+            return UIMenu(title: "", image: nil, identifier: nil, options: .displayInline, children: [downloadAction])
+        }
+        return config
+    }
+    
+
 }

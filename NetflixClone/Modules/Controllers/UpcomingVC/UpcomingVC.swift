@@ -75,21 +75,6 @@ extension UpcomingVC: UITableViewDelegate, UITableViewDataSource {
                 self?.navigationController?.pushViewController(vc, animated: true)
             }
         }
-        
-        
-
     }
     
 }
-
-//extension UpcomingVC: SectionTableViewCellDelegate {
-//    func cellDidTapped(_ cell: SectionTableViewCell, trailerModel: MovieTrailer) {
-//        DispatchQueue.main.async { [weak self] in
-//            let vc = MovieTrailerVC()
-//            vc.setupVC(for: trailerModel)
-//            self?.navigationController?.pushViewController(vc, animated: true)
-//        }
-//    }
-//
-//
-//}
