@@ -36,6 +36,7 @@
 		40B3636028C373AB00C42551 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B3635F28C373AB00C42551 /* Movie.swift */; };
 		40CF856528C65A3A000FE362 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 40CF856428C65A3A000FE362 /* SDWebImage */; };
 		40CF856728C65A3A000FE362 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 40CF856628C65A3A000FE362 /* SDWebImageMapKit */; };
+		40EB148528E555EE007FE940 /* DownloadVCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EB148428E555EE007FE940 /* DownloadVCViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,7 @@
 		40A5546128C0A881002630A6 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		40A5546328C23989002630A6 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		40B3635F28C373AB00C42551 /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		40EB148428E555EE007FE940 /* DownloadVCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadVCViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,7 +194,7 @@
 				40019F0828C9EFB400EE6A9B /* MovieListTableViewCell.swift */,
 				40019F0A28C9EFC300EE6A9B /* UpcomingVC */,
 				40019F0B28CB51FB00EE6A9B /* SearchVC */,
-				4096729428BE37A7005E1FC9 /* DownloadsVC.swift */,
+				40EB148328E555D7007FE940 /* DownloadsVC */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -259,6 +261,15 @@
 				400D4F9C28DEFDBD006DA8D0 /* CoreDataService */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		40EB148328E555D7007FE940 /* DownloadsVC */ = {
+			isa = PBXGroup;
+			children = (
+				4096729428BE37A7005E1FC9 /* DownloadsVC.swift */,
+				40EB148428E555EE007FE940 /* DownloadVCViewModel.swift */,
+			);
+			path = DownloadsVC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -349,6 +360,7 @@
 				40019F0D28CB520B00EE6A9B /* SearchVCViewModel.swift in Sources */,
 				4096728F28BE377D005E1FC9 /* HomeVC.swift in Sources */,
 				4078DF8328D8D00100E01954 /* MovieTrailer.swift in Sources */,
+				40EB148528E555EE007FE940 /* DownloadVCViewModel.swift in Sources */,
 				40818F9028BE01A400328750 /* MainTabBarVC.swift in Sources */,
 				40818F8C28BE01A400328750 /* AppDelegate.swift in Sources */,
 				40A5546228C0A881002630A6 /* HeaderView.swift in Sources */,

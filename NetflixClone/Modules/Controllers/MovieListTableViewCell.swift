@@ -44,7 +44,13 @@ class MovieListTableViewCell: UITableViewCell {
         setupLayouts()
         loadImage(for: movie)
         titleLabel.text = movie.name
-        
+    }
+    
+    func setupCell(with entity: MovieEntity) {
+        setupViews()
+        setupLayouts()
+        loadImage(for: entity.moviePosterEntity?.previewURL)
+        titleLabel.text = entity.name
     }
     
     private func setupViews() {
@@ -78,6 +84,11 @@ class MovieListTableViewCell: UITableViewCell {
     
     private func loadImage(for movie: Movie) {
         guard let poster = movie.poster?.url, let url = URL(string: poster) else { return }
+        upcomingImageView.sd_setImage(with: url)
+    }
+    
+    private func loadImage(for urlStr: String?) {
+        guard let str = urlStr, let url = URL(string: str) else {return}
         upcomingImageView.sd_setImage(with: url)
     }
     

@@ -16,7 +16,7 @@ struct Movie: Codable {
 //    let externalID: MovieExternalID
     let poster: MoviePoster?
 //    let rating, votes: MovieRating
-    let rating: MovieRating
+    let rating: MovieRating?
     let movieLength: Int?
     let id: Int
 //    let type: MovieType
@@ -59,8 +59,8 @@ struct MovieName: Codable {
 }
 
 struct MoviePoster: Codable {
-    let id: String
-    let url, previewURL: String
+    let id: String?
+    let url, previewURL: String?
 
     enum CodingKeys: String, CodingKey {
         case id = "_id"

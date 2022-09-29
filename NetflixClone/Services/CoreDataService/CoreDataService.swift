@@ -13,21 +13,16 @@ final class CoreDataService {
     
     enum CDSError: Error {
         case failedToSave
+        case failedToFetchData
+        case failedToDelete
     }
-//    let poster: MoviePoster?
-//    let rating: MovieRating
-//    let movieLength: Int?
-//    let id: Int
-//    let name, docDescription: String?
-//    let year: Int
-//    let alternativeName: String?
     
     static let shared = CoreDataService()
     private init(){}
     
     func download(for movie: Movie, complition: @escaping (Result<Void, Error>) -> Void) {
 
-        let movieEntity = convert(movie: movie)
+        convert(movie: movie)
         
         do {
             try context.save()
@@ -38,7 +33,30 @@ final class CoreDataService {
         }
     }
     
-    private func convert(movie: Movie) -> MovieEntity? {
+    func fetchData(complition: @escaping (Result<[MovieEntity], Error>) -> Void) {
+        do {
+            let movieEntities = try context.fetch(MovieEntity.fetchRequest())
+            
+            complition(.success(movieEntities))
+        }
+        catch {
+            complition(.failure(CDSError.failedToFetchData))
+        }
+    }
+    
+    func delete(movieEntity: MovieEntity, complition: @escaping ((Result<Void, Error>) -> Void)) {
+        context.delete(movieEntity)
+        do {
+           try context.save()
+            complition(.success(()))
+        }
+        catch {
+            complition(.failure(CDSError.failedToDelete))
+        }
+    }
+    
+    //save stuff
+    private func convert(movie: Movie) {
         let item = MovieEntity(context: context)
         item.name = movie.name
         item.docDescription = movie.docDescription
@@ -48,7 +66,7 @@ final class CoreDataService {
         item.movieLength = Int64(movie.movieLength ?? 0)
         item.year = Int64(movie.year)
         item.id = Int64(movie.id)
-        return item
+//        return item
     }
     private func convert(posert: MoviePoster?) -> MoviePosterEntity? {
         guard let posert = posert else { return nil}
@@ -68,6 +86,35 @@ final class CoreDataService {
         item.kp = rating.kp ?? 0
         return item
     }
+    
+    //fetch staff
+    func convert(movieEntity: MovieEntity) -> Movie {
+
+        return Movie(poster: convert(posterEntity: movieEntity.moviePosterEntity),
+                     rating: convert(ratingEntity: movieEntity.movieRaitingEntity),
+                          movieLength: Int(movieEntity.movieLength),
+                          id: Int(movieEntity.id),
+                          name: movieEntity.name,
+                          docDescription: movieEntity.docDescription,
+                          year: Int(movieEntity.year),
+                          alternativeName: movieEntity.alternativeName)
+    }
+
+    private func convert(posterEntity: MoviePosterEntity?) -> MoviePoster? {
+        return MoviePoster(id: posterEntity?.id,
+                           url: posterEntity?.url,
+                           previewURL: posterEntity?.previewURL)
+    }
+
+    private func convert(ratingEntity: MovieRatingEntity?) -> MovieRating? {
+        return MovieRating(id: ratingEntity?.id,
+                           kp: ratingEntity?.kp,
+                           imdb: ratingEntity?.imdb,
+                           filmCritics: ratingEntity?.filmCritics)
+    }
+
+    
+                          
     
     var context: NSManagedObjectContext {
         return persistentContainer.viewContext

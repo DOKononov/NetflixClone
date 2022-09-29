@@ -28,11 +28,13 @@ class SectionTableViewCell : UITableViewCell {
         return collection
     }()
     
+    
     private func downloadDidTapped(at indexPath: IndexPath) {
         CoreDataService.shared.download(for: movies[indexPath.row]) { result in
             switch result {
             case .success():
-                print("succcess")
+                NotificationCenter.default.post(name: NSNotification.Name("downloaded"), object: nil)
+//                print("succcess")
             case .failure(let error):
                 print(error.localizedDescription)
             }
