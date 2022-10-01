@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class MovieListTableViewCell: UITableViewCell {
+final class MovieListTableViewCell: UITableViewCell {
     
     static let rowHeight: CGFloat = 150
     

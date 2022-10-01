@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 //https://api.kinopoisk.dev/movie?field=rating.kp&search=7-10&token=ZQQ8GMN-TN54SGK-NB3MKEC-ZKB8V06
-//movie?field=rating.kp&search=7-10&field=year&search=2017-2020&field=typeNumber&search=2&sortField=year&sortType=1&sortField=votes.imdb&sortType=-1&token=ZQQ8GMN-TN54SGK-NB3MKEC-ZKB8V06
 
 struct Constance {
     static let API_KEY = "ZQQ8GMN-TN54SGK-NB3MKEC-ZKB8V06"
@@ -24,8 +23,6 @@ enum APIErrors: Error {
 }
 
 final class NetworkService {
-//    static let shared = NetworkService()
-//    private init(){}
     
     func getMovies(fromYear: String, toYear: String, complition: @escaping (Result<[Movie]?, Error>) -> Void) {
         guard let url = URL(string: Constance.baseURL
@@ -35,7 +32,6 @@ final class NetworkService {
                             + "&sortField=year&sortType=1"
                             + "&sortField=votes.imdb&sortType=-1"
                             + "&token=" +  Constance.API_KEY) else { return }
-//        print(url)
         URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
             guard let data = data, error == nil else { return }
             do {
@@ -51,7 +47,6 @@ final class NetworkService {
     }
     
     func serchFor(movie: String, complition: @escaping (Result<[Movie], Error>) -> Void) {
-        
         let str = (Constance.baseURL
                 + "?search="
                 + movie
@@ -60,7 +55,6 @@ final class NetworkService {
                 + "&token=" + Constance.API_KEY)
                 
         guard let url = URL(string: str) else { return }
-        print(url)
         URLSession.shared.dataTask(with: url) { data, resonce, error in
             guard let data = data, error == nil else { return }
             do {
@@ -72,7 +66,6 @@ final class NetworkService {
             catch {
                 complition(.failure(error))
             }
-
         }.resume()
     }
     
@@ -90,11 +83,9 @@ final class NetworkService {
                     complition(.failure(APIErrors.movieTrailerError))
                 }
             }
-            
             catch {
                 complition(.failure(error))
             }
-
         }.resume()
     }
     

@@ -11,12 +11,12 @@ protocol SectionTableViewCellDelegate: AnyObject {
     func cellDidTapped(_ cell: SectionTableViewCell, trailerModel: MovieTrailer)
 }
 
-class SectionTableViewCell : UITableViewCell {
+final class SectionTableViewCell : UITableViewCell {
     
     weak var delegate: SectionTableViewCellDelegate?
-    
     private var movies: [Movie] = []
     private var networkService = NetworkService()
+    private var notificationCenter = NotificationCenter.default
     
     private var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -30,11 +30,10 @@ class SectionTableViewCell : UITableViewCell {
     
     
     private func downloadDidTapped(at indexPath: IndexPath) {
-        CoreDataService.shared.download(for: movies[indexPath.row]) { result in
+        CoreDataService.shared.download(for: movies[indexPath.row]) { [weak self] result in
             switch result {
             case .success():
-                NotificationCenter.default.post(name: NSNotification.Name("downloaded"), object: nil)
-//                print("succcess")
+                self?.notificationCenter.post(name: NSNotification.Name("downloaded"), object: nil)
             case .failure(let error):
                 print(error.localizedDescription)
             }

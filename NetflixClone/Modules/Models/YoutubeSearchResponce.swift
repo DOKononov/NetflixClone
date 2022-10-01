@@ -8,8 +8,6 @@
 import Foundation
 
 struct YoutubeSearchResponce: Codable {
-//    let kind, etag, nextPageToken, regionCode: String
-//    let pageInfo: PageInfo
     let items: [VideoElement]
 }
 
@@ -27,7 +25,3 @@ struct ID: Codable {
         case playlistID = "playlistId"
     }
 }
-
-//struct PageInfo: Codable {
-//    let totalResults, resultsPerPage: Int
-//}

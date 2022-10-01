@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-class MovieTrailerVC: UIViewController, WKNavigationDelegate {
+final class MovieTrailerVC: UIViewController, WKNavigationDelegate {
     
     private let webView: WKWebView = {
         let view = WKWebView()
@@ -68,11 +68,11 @@ class MovieTrailerVC: UIViewController, WKNavigationDelegate {
         webView.load(URLRequest(url: url))
     }
     
-    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+    internal func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         activityIndicator.startAnimating()
     }
     
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    internal func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         activityIndicator.stopAnimating()
     }
     

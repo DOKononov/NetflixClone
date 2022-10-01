@@ -213,7 +213,6 @@
 			children = (
 				408A994828C49BCF00335713 /* Helpers */,
 				4096729D28BE3F1A005E1FC9 /* Models */,
-				4096729F28BE3F33005E1FC9 /* ViewModels */,
 				4096728D28BE3767005E1FC9 /* Controllers */,
 				40818F8F28BE01A400328750 /* MainTabBarVC.swift */,
 			);
@@ -245,13 +244,6 @@
 				4078DF8228D8D00100E01954 /* MovieTrailer.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		4096729F28BE3F33005E1FC9 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		40A5546528C23991002630A6 /* Services */ = {

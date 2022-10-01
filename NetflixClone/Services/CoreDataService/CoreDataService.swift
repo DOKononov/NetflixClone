@@ -21,9 +21,7 @@ final class CoreDataService {
     private init(){}
     
     func download(for movie: Movie, complition: @escaping (Result<Void, Error>) -> Void) {
-
         convert(movie: movie)
-        
         do {
             try context.save()
             complition(.success(()))
@@ -66,7 +64,6 @@ final class CoreDataService {
         item.movieLength = Int64(movie.movieLength ?? 0)
         item.year = Int64(movie.year)
         item.id = Int64(movie.id)
-//        return item
     }
     private func convert(posert: MoviePoster?) -> MoviePosterEntity? {
         guard let posert = posert else { return nil}
@@ -89,7 +86,6 @@ final class CoreDataService {
     
     //fetch staff
     func convert(movieEntity: MovieEntity) -> Movie {
-
         return Movie(poster: convert(posterEntity: movieEntity.moviePosterEntity),
                      rating: convert(ratingEntity: movieEntity.movieRaitingEntity),
                           movieLength: Int(movieEntity.movieLength),

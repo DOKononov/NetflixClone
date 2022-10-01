@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class HeaderView: UIView {
+final class HeaderView: UIView {
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()

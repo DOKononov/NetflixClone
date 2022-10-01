@@ -9,45 +9,26 @@ import Foundation
 
 struct KinopoiskResponce: Codable {
     let docs: [Movie]?
-//    let total, limit, page, pages: Int
 }
 
 struct Movie: Codable {
-//    let externalID: MovieExternalID
     let poster: MoviePoster?
-//    let rating, votes: MovieRating
     let rating: MovieRating?
     let movieLength: Int?
     let id: Int
-//    let type: MovieType
     let name, docDescription: String?
     let year: Int
     let alternativeName: String?
-//    let names: [MovieName]
-//    let shortDescription: String?
-//    let color: String?
 
     enum CodingKeys: String, CodingKey {
-//        case externalID = "externalId"
-        case poster, rating//, votes, 
-        case movieLength, id//, type,
+        case poster, rating
+        case movieLength, id
         case name
         case docDescription = "description"
         case year
         case alternativeName
-//        case names, shortDescription, color
     }
 }
-
-//struct MovieExternalID: Codable {
-//    let id: String
-//    let imdb: String?
-//
-//    enum CodingKeys: String, CodingKey {
-//        case id = "_id"
-//        case imdb
-//    }
-//}
 
 struct MovieName: Codable {
     let id, name: String
@@ -79,8 +60,3 @@ struct MovieRating: Codable {
         case kp, imdb, filmCritics
     }
 }
-
-//enum MovieType: String, Codable {
-//    case tvSeries = "tv-series"
-//    case movie
-//}

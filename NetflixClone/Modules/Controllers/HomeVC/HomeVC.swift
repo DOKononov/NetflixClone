@@ -52,10 +52,7 @@ final class HomeVC: UIViewController {
             
         }
     }
-    
-//    private func setupHeaderView() {
-//        headerView.setupView(for: viewModel.randomHeaderMovie)
-//    }
+
     
     private func setupViews() {
         view.addSubview(tableView)
@@ -68,10 +65,7 @@ final class HomeVC: UIViewController {
     }
     
     private func setupNavigationBar() {
-        
-//        let image = UIImage(named: "netflixLogo")
-//        image?.withRenderingMode(.alwaysOriginal)
-        
+        navigationController?.navigationBar.tintColor = .label
         let leftBarButton = UIBarButtonItem(image: UIImage(systemName: "n.circle.fill"), style: .done, target: self, action: nil)
         navigationItem.leftBarButtonItem = leftBarButton
         
@@ -79,26 +73,21 @@ final class HomeVC: UIViewController {
             UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "play.rectangle"), style: .done, target: self, action: nil)
         ]
-        
-        navigationController?.navigationBar.tintColor = .label
     }
     
 }
 
 
 extension HomeVC: UITableViewDelegate, UITableViewDataSource {
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sectionTitles.count
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
-    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return viewModel.sectionTitles[section]
     }
-    
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else {return}
         header.textLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)

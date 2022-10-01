@@ -20,6 +20,7 @@ protocol DownloadVCProtocol {
 final class DownloadVCViewModel: DownloadVCProtocol {
     private var networkService = NetworkService()
     private var coreDataService = CoreDataService.shared
+    private var notificationCenter = NotificationCenter.default
     var trailer: MovieTrailer?
     var movies: [MovieEntity] = [] {
         didSet {
@@ -52,7 +53,7 @@ final class DownloadVCViewModel: DownloadVCProtocol {
     }
     
     func addObserver() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name("downloaded"), object: nil, queue: nil) { _ in
+        notificationCenter.addObserver(forName: NSNotification.Name("downloaded"), object: nil, queue: nil) { _ in
             self.fetchMovies()
         }
     }

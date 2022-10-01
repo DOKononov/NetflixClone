@@ -12,7 +12,7 @@ protocol SearchResultsDelegate: AnyObject {
     func searchResaltDidTapped(trailer: MovieTrailer?)
 }
 
-class SearchResultsViewController: UIViewController {
+final class SearchResultsViewController: UIViewController {
     
     weak var delegate: SearchResultsDelegate?
     
